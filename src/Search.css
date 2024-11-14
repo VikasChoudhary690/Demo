@@ -1,0 +1,31 @@
+
+
+.itme1
+{
+   background-color: rgb(172, 121, 121);
+   width: 100%;
+   list-style: none;
+   float: left;
+}
+
+
+.name-id
+{
+   background-color: rgb(57, 203, 21);
+   width: 250px;
+   list-style: none;
+   float: left;
+}
+
+.img-name
+{
+  margin-top: 20px;
+   /* background-color: rgb(74, 4, 187); */
+   width: 200px;
+   height: 180px;
+   list-style: none;
+   float: left;
+   margin-left: 20px;
+   border: 2px solid red;
+   
+}
