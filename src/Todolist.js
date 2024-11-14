@@ -1,97 +1,86 @@
-
 import { useEffect, useState } from "react";
 import { MdCheckBox } from "react-icons/md";
 import { MdDeleteForever } from "react-icons/md";
 
 export const Todolist = () => {
+  const [inputValue, setInputValue] = useState("");
 
-    const [inputValue, setInputValue] = useState("");
+  const [task, setTask] = useState([]);
 
-    const [task, setTask] = useState([]);
+  const [dateTime, setDateTime] = useState("");
 
-    const [dateTime,setDateTime] = useState("");
+  const handleInputChange = (value) => {
+    setInputValue(value);
+  };
 
-    const handleInputChange = (value) =>{
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
 
-        setInputValue(value);
-    };
+    if (!inputValue) return;
 
-    const handleFormSubmit = (event) => {
-        event.preventDefault();
+    setTask((prevTask) => [...prevTask, inputValue]);
 
-        if(!inputValue) return;
+    setInputValue("");
+  };
 
-        setTask((prevTask) => [...prevTask, inputValue]);
+  //todo date and time
 
-        setInputValue(""); 
-    };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date();
+      const formattedDate = now.toLocaleDateString();
+      const formattedTime = now.toLocaleTimeString();
+      setDateTime(`${formattedDate}-${formattedTime}`);
+    }, 1000);
 
-    //todo date and time 
+    return () => clearInterval(interval);
+  }, []);
 
-    useEffect(() => {
+  //todo handleDeleteTodo function
 
-        const interval = setInterval(() => {   
-            const  now = new Date();
-            const formattedDate = now.toLocaleDateString();
-            const formattedTime = now.toLocaleTimeString();
-            setDateTime(`${formattedDate}-${formattedTime}`);
-           },1000)
+  return (
+    <section>
+      <header>
+        <h1>Todo List</h1>
 
-           return () => clearInterval(interval);
-    }, []);
-    
-    //todo handleDeleteTodo function
-     
-    const handleDeleteTodo
-    return(
+        <h2>{dateTime}</h2>
+      </header>
 
-        <section>
-            <header>
+      <section>
+        <form onSubmit={handleFormSubmit}>
+          <div>
+            <input
+              type="text"
+              autoComplete="off"
+              value={inputValue}
+              onChange={(event) => handleInputChange(event.target.value)}
+            />
+          </div>
 
-            <h1>Todo List</h1>
+          <div>
+            <button type="submit">Add</button>
+          </div>
+        </form>
+      </section>
 
-            <h2>{dateTime}</h2>
+      <section>
+        <ul>
+          {task.map((curTask, index) => {
+            return (
+              <li key={index}>
+                <span>{curTask}</span>
 
-            </header>
-
-            <section>
-                     <form onSubmit={handleFormSubmit}>
-                              <div>
-                                <input type="text" autoComplete="off"
-                                 value={inputValue}
-                                 onChange={(event) => handleInputChange(event.target.value) }/>
-                              </div>
-                                
-                              <div>
-                                <button type="submit">Add</button>
-                              </div>
-                            
-                     </form>
-            </section>
-
-            <section>
-            <ul>
-                {
-                task.map((curTask, index) => {
-                    return (
-                    <li key={index}>
-                        <span>{curTask}</span>
-
-                        <button><MdCheckBox /></button>
-                        <button><MdDeleteForever onClick={handleDeleteTodo} /></button>
-
-                       
-                          
-                    </li>
-                    )
-                })
-
-            }
-            </ul>
-            </section>
-
-        </section>
-
-
-    )
-}
+                <button>
+                  <MdCheckBox />
+                </button>
+                <button>
+                  <MdDeleteForever onClick={handleDeleteTodo} />
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+    </section>
+  );
+};
